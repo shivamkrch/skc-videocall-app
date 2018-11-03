@@ -1,0 +1,15 @@
+{
+  "name": "skc-videocall-app",
+  "version": "1.0.0",
+  "description": "A video call app using socket.io and webRTC",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Shivam Kumar",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "socket.io": "^2.1.1"
+  }
+}
