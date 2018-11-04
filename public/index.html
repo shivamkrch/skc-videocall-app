@@ -6,6 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
@@ -17,42 +18,74 @@
     <!-- Font-awesome CSS -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
         crossorigin="anonymous">
-    <!-- AngularJS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
 </head>
 
 <body>
-    <div ng-app="videoCallApp" id="mainDiv">
-        <div class="menu-btn animated fadeInRight" style="display:none">
+    <!-- AngularJS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <div ng-app="videoCallApp" id="mainDiv" ng-controller="vcAppCtrl as vc" ng-cloak>
+        <!-- Menu Button -->
+        <div class="menu-btn animated fadeInRight" style="display:none" title="Toggle Online Users Panel">
             <div class="btn-line"></div>
             <div class="btn-line"></div>
             <div class="btn-line"></div>
         </div>
+        <!-- Login Form -->
         <div class="container-fluid m-0" id="formDiv">
             <h2 class="display-1 m-5 animated fadeInDown slow" id="fh">Login</h2>
-            <form action="" id="loginForm" class="m-5 form-inline">
+            <form id="loginForm" class="m-5 form-inline" name="loginForm">
                 <div class="input-group m-2 animated fadeInLeft">
                     <div class="input-group-prepend">
                         <span class="input-group-text fas fa-user-alt" style="font-size:18px"></span>
                     </div>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="Enter username to login"
-                        aria-describedby="helpId" autofocus>
-                    <small id="helpId" class=""></small>
+                    <input type="text" name="username" id="username" minlength="5" class="form-control" placeholder="Enter username to login"
+                        required autofocus ng-model="vc.username" ng-keyup="vc.usernameAvb()">
                 </div>
-                <input type="button" value="Submit" class="btn btn-primary m-3 animated fadeInRight" id="loginBtn">
+                <input type="button" value="Login" class="btn btn-primary m-3 animated fadeInRight" id="loginBtn"
+                    ng-disabled="loginForm.$invalid || !vc.userAvb" ng-click="vc.loginUser()">
             </form>
-        </div>
-
-        <div class="container-fluid row p-4 mx-1" id="dashboard" style="display: none">
-            <div class="container bg-secondary col-9 animated fadeInUp mb-3" id="video" allowfullscreen>
-                <h5 id="frndsId">shivamkrch</h5>
-                <span class="fas fa-expand" id="fullScreenBtn"></span>
-                <video id="friendsVideo" class="video bg-transparent"></video>
-                <video id="myVideo" class="video bg-info"></video>
+            <div class="alert alert-danger m-5 animated fadeIn faster" role="alert" ng-show="loginForm.username.$invalid && loginForm.username.$dirty">
+                <div ng-show="loginForm.username.$error.required">Username is required.</div>
+                <div ng-show="loginForm.username.$error.minlength">Username should be at least 5 characters long.</div>
             </div>
-
-            <div class="container col-3 bg-warning animated fadeInRight mb-3" id="onlineUsers">
-                <h3 class="p-2 text-center text-light bg-warning">shivamkrch</h3>
+            <div class="alert alert-danger animated fadeIn faster m-5" role="alert" ng-show="loginForm.username.$valid && !vc.userAvb">
+                <strong>Username Unavailable!</strong> Please try again.
+            </div>
+            <div class="alert alert-success animated fadeIn faster m-5" role="alert" ng-show="loginForm.username.$valid &&vc.userAvb">
+                <strong>Username available!</strong> You may now login.
+            </div>
+        </div>
+        <!-- Dashboard Section -->
+        <div class="container-fluid row p-4 mx-1" id="dashboard" style="display: none">
+            <!-- Video Call UI Section -->
+            <div class="container bg-secondary col-9 animated fadeInUp faster mb-3" id="video">
+                <h5 id="frndsId">{{vc.caller}}</h5>
+                <span class="fas fa-expand animated fadeInRight slower delay-3s" id="fullScreenBtn"></span>
+                <video id="friendsVideo" class="video bg-transparent"></video>
+                <video id="myVideo" class="video bg-info animated fadeInLeft slow delay-4s"></video>
+            </div>
+            <!-- Onine Users Section -->
+            <div class="container col-3 bg-warning animated fadeInRight faster mb-3" id="onlineUsers">
+                <h3 class="p-2 text-center text-light bg-warning mt-3">{{vc.username}}</h3>
+                <div class="alert alert-info" role="alert" ng-show="vc.onlineUsers.length < 1">
+                    <strong>No users online.</strong>
+                </div>
+                <ul class="list-group mt-5" ng-show="vc.onlineUsers.length > 1">
+                    <li class="list-group-item bg-primary text-center animated fadeInUp">
+                        <h6 class="text-light">Online Users</h6>
+                    </li>
+                    <li class="list-group-item animated fadeInUp" ng-repeat="user in vc.onlineUsers" ng-hide="user.username == vc.username"
+                        style="justify-items: center">
+                        <strong class="pt-3" style="font-size: 1.2rem">{{user.username}}</strong>
+                        <span class="badge badge-pill badge-danger animated fadeInRight float-right" ng-show="user.inCall">
+                            In Call
+                        </span>
+                        <button class="btn btn-primary btn-sm float-right rounded-circle" title="Call {{user.username}}"
+                            ng-show="!user.inCall">
+                            <span class="fas fa-video p-1 py-2" style="font-size: .8rem"></span>
+                        </button>
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
