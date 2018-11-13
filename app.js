@@ -19,8 +19,31 @@ io.on("connection", socket => {
     console.log(`New user ${username} logged in`);
     io.emit("new user", newuser);
   });
+  socket.on("call", (callee, sdp) => {
+    console.log(`${socket.username} calling ${callee}  ${sdp}`);
+    onlineUsers.forEach((user, i) => {
+      if (user.username == callee || user.username == socket.username) {
+        onlineUsers[i].inCall = true;
+      }
+    });
+    socket.broadcast.emit(`call`, callee, socket.username, sdp);
+  });
+  socket.on("call reject", caller => {
+    socket.broadcast.emit("call reject", socket.username, caller);
+  });
+  socket.on("answer", (caller, sdp) => {
+    console.log(`${socket.username} answered ${caller}  ${sdp}`);
+    socket.broadcast.emit("answer", socket.username, caller, sdp);
+  });
+  socket.on("ice", (caller, ice) => {
+    socket.broadcast.emit("ice", socket.username, caller, ice);
+    console.log("ice recived and sent");
+  });
+  socket.on("end call", caller => {
+    socket.broadcast.emit("end call", socket.username, caller);
+  });
   socket.on("disconnect", () => {
-    if (socket.username != undefined) {
+    if (socket.username) {
       io.emit("user logout", socket.index);
       onlineUsers.splice(socket.index, 1);
     }
