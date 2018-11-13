@@ -80,7 +80,7 @@ app.get("*", function(req, res) {
   res.redirect("/");
 });
 
-const port = process.env.port || 8080;
+const port = process.env.PORT || 8080;
 
 http.listen(port, function() {
   console.log("listening on port: ", port);
