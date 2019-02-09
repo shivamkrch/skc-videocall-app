@@ -1,5 +1,5 @@
 let showOnlineUsers = false;
-const videoCallEl = $("#video");
+const videoCallEl = document.querySelector("#video");
 const myVideo = $("#myVideo");
 const frndsVideo = $("#friendsVideo");
 const onlineUsersDiv = $("#onlineUsers");
@@ -51,11 +51,11 @@ fullScreenBtn.click(function() {
 });
 
 var socket = io();
+console.log(socket);
 var peerConn,
   onlineUsers = [],
   username,
   caller;
-
 function createOffer(callee) {
   peerConn = new RTCPeerConnection();
   peerConn.onicecandidate = onIce;
