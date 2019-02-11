@@ -1,0 +1,8 @@
+{
+  "short_name": "SKC Video Call",
+  "name": "SKC Video Call App",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#fff",
+  "background_color": "#341539"
+}

@@ -1,86 +1,158 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
-<head>
+  <head>
     <title>SKC Video Call App</title>
     <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="theme-color" content="#000" />
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css" integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
-        crossorigin="anonymous">
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/css/bootstrap.min.css"
+      integrity="sha384-Smlep5jCw/wG7hdkwQ/Z5nLIefveQRIY9nfy6xoR1uRYBtpZgI6339F5dgvm/e9B"
+      crossorigin="anonymous"
+    />
+    <link rel="manifest" href="manifest.json" />
     <!-- Styles.css -->
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/styles.css" />
     <!-- Animate.css -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css"
+    />
     <!-- Font-awesome CSS -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.2/css/all.css" integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
-        crossorigin="anonymous">
-</head>
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.4.2/css/all.css"
+      integrity="sha384-/rXc/GQVaYpyDdyxK+ecHPVYJSN9bmVFBvjA/9eOB+pb3F2w2N6fc5qB9Ew5yIns"
+      crossorigin="anonymous"
+    />
+  </head>
 
-<body>
+  <body>
     <div id="mainDiv">
-        <!-- Menu Button -->
-        <div class="menu-btn animated fadeInRight" style="display:none" title="Toggle Online Users Panel">
-            <div class="btn-line"></div>
-            <div class="btn-line"></div>
-            <div class="btn-line"></div>
-        </div>
-        <!-- Login Form -->
-        <div class="container-fluid m-0" id="formDiv">
-            <h2 class="display-1 m-5 animated fadeInDown slow" id="fh">Login</h2>
-            <form id="loginForm" class="m-5 form-inline" name="loginForm">
-                <div class="input-group m-2 animated fadeInLeft">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text fas fa-user-alt" style="font-size:18px"></span>
-                    </div>
-                    <input type="text" name="username" id="username" minlength="5" class="form-control" placeholder="Enter username to login"
-                        required autofocus onkeyup="checkUserAvb()">
-
-                </div>
-                <input type="submit" value="Login" class="btn btn-primary m-3 animated fadeInRight" id="loginBtn"
-                    disabled>
-            </form>
-            <span class="help-inline text-light mx-5 animated fadeIn slower delay-2s">Username is required and
-                should be at least 5
-                characters
-                long.</span>
-            <div id="userAvb" class="m-5 container"></div>
-        </div>
-        <!-- Dashboard Section -->
-        <div class="container-fluid row p-4 mx-1" id="dashboard" style="display: none">
-            <!-- Video Call UI Section -->
-            <div class="container bg-dark col-9 animated fadeInUp faster mb-3" id="video">
-                <h5 id="frndsId"></h5>
-                <span class="fas fa-expand animated fadeInRight" id="fullScreenBtn"></span>
-                <video id="friendsVideo" class="video bg-transparent" autoplay playsinline></video>
-                <video id="myVideo" class="video bg-info animated fadeInLeft slow delay-4s" autoplay muted playsinline></video>
-                <button class="btn btn-danger rounded-circle animated fadeInDown" id="hangUpBtn" title="End Call">
-                    <span class="fas fa-video-slash py-2" style="font-size: 1.2rem"></span>
-                </button>
+      <!-- Menu Button -->
+      <div
+        class="menu-btn animated fadeInRight"
+        style="display:none"
+        title="Toggle Online Users Panel"
+      >
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+        <div class="btn-line"></div>
+      </div>
+      <!-- Login Form -->
+      <div class="container-fluid m-0" id="formDiv">
+        <h2 class="display-1 m-5 animated fadeInDown slow" id="fh">Login</h2>
+        <form id="loginForm" class="m-5 form-inline" name="loginForm">
+          <div class="input-group m-2 animated fadeInLeft">
+            <div class="input-group-prepend">
+              <span
+                class="input-group-text fas fa-user-alt"
+                style="font-size:18px"
+              ></span>
             </div>
-            <!-- Onine Users Section -->
-            <div class="container col-3 bg-warning animated fadeInRight faster mb-3" id="onlineUsers">
-                <h3 class="p-2 text-center text-light bg-warning mt-3" id="username2"></h3>
-                <ul class="list-group mt-5" id="usersList">
-                    <li class="list-group-item bg-primary p-2 text-center animated fadeInUp">
-                        <h5 class="text-light p-0"> Online Users</h5>
-                    </li>
-                </ul>
-            </div>
+            <input
+              type="text"
+              name="username"
+              id="username"
+              minlength="5"
+              class="form-control"
+              placeholder="Enter username to login"
+              required
+              autofocus
+              onkeyup="checkUserAvb()"
+            />
+          </div>
+          <input
+            type="submit"
+            value="Login"
+            class="btn btn-primary m-3 animated fadeInRight"
+            id="loginBtn"
+            disabled
+          />
+        </form>
+        <span
+          class="help-inline text-light mx-5 animated fadeIn slower delay-2s"
+          >Username is required and should be at least 5 characters long.</span
+        >
+        <div id="userAvb" class="m-5 container"></div>
+      </div>
+      <!-- Dashboard Section -->
+      <div
+        class="container-fluid row p-4 mx-1"
+        id="dashboard"
+        style="display: none"
+      >
+        <!-- Video Call UI Section -->
+        <div
+          class="container bg-dark col-9 animated fadeInUp faster mb-3"
+          id="video"
+        >
+          <h5 id="frndsId"></h5>
+          <span
+            class="fas fa-expand animated fadeInRight"
+            id="fullScreenBtn"
+          ></span>
+          <video
+            id="friendsVideo"
+            class="video bg-transparent"
+            autoplay
+            playsinline
+          ></video>
+          <video
+            id="myVideo"
+            class="video bg-info animated fadeInLeft slow delay-4s"
+            autoplay
+            muted
+            playsinline
+          ></video>
+          <button
+            class="btn btn-danger rounded-circle animated fadeInDown"
+            id="hangUpBtn"
+            title="End Call"
+          >
+            <span
+              class="fas fa-video-slash py-2"
+              style="font-size: 1.2rem"
+            ></span>
+          </button>
         </div>
+        <!-- Onine Users Section -->
+        <div
+          class="container col-3 bg-warning animated fadeInRight faster mb-3"
+          id="onlineUsers"
+        >
+          <h3
+            class="p-2 text-center text-light bg-warning mt-3"
+            id="username2"
+          ></h3>
+          <ul class="list-group mt-5" id="usersList">
+            <li
+              class="list-group-item bg-primary p-2 text-center animated fadeInUp"
+            >
+              <h5 class="text-light p-0">Online Users</h5>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-        crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js" integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
-        crossorigin="anonymous"></script>
-</body>
-
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+      integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.2/js/bootstrap.min.js"
+      integrity="sha384-o+RDsa0aLu++PJvFqy8fFScvbHFLtbvScb8AjopnFD+iEQ7wo/CG0xlczd+2O/em"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
