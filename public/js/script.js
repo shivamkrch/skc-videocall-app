@@ -1,12 +1,12 @@
 let showOnlineUsers = false;
 const videoCallEl = document.querySelector("#video");
-const myVideo = $("#myVideo");
-const frndsVideo = $("#friendsVideo");
+const myVideo = document.getElementById("myVideo");
+const frndsVideo = document.getElementById("friendsVideo");
 const onlineUsersDiv = $("#onlineUsers");
 const menuBtn = $(".menu-btn");
 const fullScreenBtn = $("#fullScreenBtn");
 
-menuBtn.click(function() {
+menuBtn.click(function () {
   if (!showOnlineUsers) {
     menuBtn.addClass("close");
     onlineUsersDiv.addClass("show fadeInRight").removeClass("fadeOutRight");
@@ -18,8 +18,8 @@ menuBtn.click(function() {
   }
 });
 
-fullScreenBtn.click(function() {
-  if (!document.fullscreen) {
+fullScreenBtn.click(function () {
+  if (!document.fullscreenEnabled) {
     if (videoCallEl.requestFullscreen) {
       videoCallEl.requestFullscreen();
     } else if (videoCallEl.mozRequestFullScreen) {
@@ -61,14 +61,15 @@ function createOffer(callee) {
   peerConn.onicecandidate = onIce;
   peerConn.onaddstream = onAddStream;
   navigator.mediaDevices
-    .getUserMedia({ audio: true, video: { height: 480, width: 840 } })
-    .then(stream => {
-      peerConn.addStream((window.myVideo.srcObject = stream));
+    .getUserMedia({ audio: true, video: { height: 480 } })
+    .then((stream) => {
+      myVideo.srcObject = stream;
+      peerConn.addStream(stream);
       return peerConn.createOffer();
     })
-    .then(offer => peerConn.setLocalDescription(offer))
+    .then((offer) => peerConn.setLocalDescription(offer))
     .then(() => socket.emit("call", callee, peerConn.localDescription))
-    .catch(e => console.log(e));
+    .catch((e) => console.log(e));
   caller = callee;
 }
 
@@ -87,16 +88,17 @@ function createAnswer(sdp, caller) {
     .then(() =>
       navigator.mediaDevices.getUserMedia({
         audio: true,
-        video: { height: 480, width: 840 }
+        video: { height: 480 }
       })
     )
-    .then(stream => {
-      peerConn.addStream((window.myVideo.srcObject = stream));
+    .then((stream) => {
+      myVideo.srcObject = stream;
+      peerConn.addStream(stream);
       return peerConn.createAnswer();
     })
-    .then(answer => peerConn.setLocalDescription(answer))
+    .then((answer) => peerConn.setLocalDescription(answer))
     .then(() => socket.emit("answer", caller, peerConn.localDescription))
-    .catch(e => console.log(e));
+    .catch((e) => console.log(e));
   console.log(peerConn.localDescription);
   console.log(peerConn.remoteDescription);
 }
@@ -111,7 +113,7 @@ function onIce(event) {
 }
 
 function onAddStream(event) {
-  document.getElementById("friendsVideo").srcObject = event.stream;
+  frndsVideo.srcObject = event.stream;
   console.log("remote stream added");
 }
 
@@ -131,7 +133,7 @@ function addIce(caller, callee, ice) {
 
 socket.on("ice", addIce);
 
-$("#hangUpBtn").click(function() {
+$("#hangUpBtn").click(function () {
   closeAll();
   socket.emit("end call", caller);
 });
@@ -146,14 +148,14 @@ function endCall(caller, callee) {
 function closeAll() {
   peerConn.close();
   peerConn = null;
-  document.getElementById("friendsVideo").srcObject = null;
-  window.myVideo.srcObject.getTracks().forEach(track => track.stop());
-  window.myVideo.srcObject = null;
+  frndsVideo.srcObject = null;
+  myVideo.srcObject.getTracks().forEach((track) => track.stop());
+  myVideo.srcObject = null;
 }
 
 function checkUserAvb() {
   var inp = $("#username").val();
-  if (inp.length < 5) {
+  if (inp.length < 3) {
     $("#loginBtn").attr("disabled", "true");
     $("#userAvb").hide();
     return;
@@ -161,7 +163,7 @@ function checkUserAvb() {
   $.get(
     "/usernameCheck/" + inp,
     {},
-    res => {
+    (res) => {
       if (res.result) {
         $("#userAvb")
           .removeClass("alert alert-danger")

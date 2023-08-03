@@ -24,7 +24,10 @@
     <!-- Animate.css -->
     <link
       rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"
+      integrity="sha512-TyUaMbYrKFZfQfp+9nQGOEt+vGu4nKzLk0KaV3nFifL3K8n7lzb8DayTzLOK0pNyzxGJzGRSw78e8xqJhURJ3Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
     />
     <!-- Font-awesome CSS -->
     <link
@@ -40,7 +43,7 @@
       <!-- Menu Button -->
       <div
         class="menu-btn animated fadeInRight"
-        style="display:none"
+        style="display: none"
         title="Toggle Online Users Panel"
       >
         <div class="btn-line"></div>
@@ -55,7 +58,7 @@
             <div class="input-group-prepend">
               <span
                 class="input-group-text fas fa-user-alt"
-                style="font-size:18px"
+                style="font-size: 18px"
               ></span>
             </div>
             <input
@@ -80,7 +83,7 @@
         </form>
         <span
           class="help-inline text-light mx-5 animated fadeIn slower delay-2s"
-          >Username is required and should be at least 5 characters long.</span
+          >Username is required and should be at least 3s characters long.</span
         >
         <div id="userAvb" class="m-5 container"></div>
       </div>
@@ -145,7 +148,11 @@
     </div>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      src="https://code.jquery.com/jquery-3.7.0.min.js"
+      integrity="sha256-2Pmvv0kuTBOenSvLm6bvfBSSHrUJ+3A7x6P5Ebd07/g="
+      crossorigin="anonymous"
+    ></script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/js/script.js"></script>
     <script
